@@ -41,7 +41,7 @@ un tipado adecuado a dicha función de aplanamiento? */
 console.log('--------------------- APARTADO B -------------------------');
 console.log('----------------------------------------------------------');
 
-let aplanadoTipado = (arrayMultidimensional: Array<number>) => {
+let aplanadoTipado = (arrayMultidimensional: number[]): number[] => {
   return arrayMultidimensional.reduce(
     (acc, actual) =>
       Array.isArray(actual)
@@ -213,10 +213,19 @@ ser: */
   const repeatText = (repetitions: number, text: string): string => (
     count++, `${text} `.repeat(repetitions).trim()
   );
+  let cache = new WeakMap();
 
   const memoize2 = (f: Function) => {
-    console.log(f.arguments);
-    return f();
+    var cache = {};
+    return (rep, text) => {
+      var key = JSON.stringify(rep, text);
+      if (cache[key]) return cache[key];
+      else {
+        let funcion = f(rep, text);
+        cache[key] = funcion;
+        return funcion;
+      }
+    };
   };
 
   const memoizedGreet = memoize2(repeatText);
